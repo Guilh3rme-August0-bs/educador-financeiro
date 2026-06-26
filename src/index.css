@@ -7,8 +7,6 @@
 
 /* importações da fonte inter acima (medida em pixels no final de cada uma) */
 
-@import "tailwindcss";
-
 @import './styles/themes.css';
 
 @layer base {
