@@ -31,8 +31,7 @@ export function Header() {
                         variant="secondary"
                         icon={TrendingUp}
                         onClick={() => void navigate('/')}>
-
-                        <span className="hidden_sm:inline">Nova Simulação</span> </Button>
+                        <span className="hidden sm:inline">Nova Simulação</span> </Button>
                     <Button
                         variant="ghost"
                         icon={Clock}
