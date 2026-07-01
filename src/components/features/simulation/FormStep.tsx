@@ -19,7 +19,7 @@ export interface FormStepProps {
 
 interface ActionsButtonsProps {
     onBack: () => void
-    onNext: () => void
+    onNext: (value : string) => void
     hideBackButton?: boolean
 }
 
@@ -39,7 +39,12 @@ export const FormStep = ({
     //função para impedir o recarregamento da página ao navegar pelas etapas
     const handleSubmit = (e: SyntheticEvent<HTMLFormElement>) => {
         e.preventDefault()
-        onNext()
+
+        if (!inputValue) {
+            return
+        }
+
+        onNext(inputValue)
     }
 
     return (
@@ -51,10 +56,10 @@ export const FormStep = ({
                 {title}</h2>
             <h3 className="text-foreground mb-6 text-x1 leading-snug font-semibold sm:text-2x1">{question}</h3>
             <form onSubmit={handleSubmit} className="flex flex-col gap-4">
-                <Input {...inputProps} value={inputValue} 
-                onChange={(e) => setInputValue(inputProps.prefix === 'R$'
-                ? formatCurrencyMask(e.target.value) 
-                : e.target.value)} />
+                <Input {...inputProps} value={inputValue}
+                    onChange={(e) => setInputValue(inputProps.prefix === 'R$'
+                        ? formatCurrencyMask(e.target.value)
+                        : e.target.value)} />
                 <div className="flex flex-col gap-3 sm:flex-row sm:gap-6">
 
                     {/* botão só será renderizado se hideBackButton for false */}
@@ -72,7 +77,7 @@ export const FormStep = ({
                     <Button
                         icon={!submitButtonProps ? ArrowRight : undefined}
                         type="button"
-                        onClick={onNext}
+                        onClick={()=>onNext(inputValue)}
                         disabled={!inputValue}
                         variant="primary"
                         className="order 2 flex-1 justify-center rounded-lg py-3 sm:order-2">

@@ -1,7 +1,7 @@
 import { CalendarClock, CreditCard, Goal, Landmark, PiggyBank, Wallet } from 'lucide-react'
 import type { FormStepProps } from '../components/features/simulation/FormStep'
 
-export const simulationFormSteps: FormStepProps[] = [
+export const simulationFormSteps = [
     {
         id: 'income',
         icon: PiggyBank,
@@ -70,6 +70,12 @@ export const simulationFormSteps: FormStepProps[] = [
         submitButtonProps: {
             label: 'Gerar simulação',
             emojiIcon: '✨'
+        }
     }
-}
-]
+] satisfies FormStepProps[]
+
+/* cria uma interface que faz com qe o objeto saiba quais valores ele pode receber */
+export type SimulationFormData = Record<
+    (typeof simulationFormSteps)[number]['id'],
+    string
+> 
