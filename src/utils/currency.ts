@@ -1,5 +1,4 @@
 //máscara monetária
-
 export function formatCurrencyMask(value: string): string {
     const digits = value.replace(/\D/g, '')
 
@@ -17,4 +16,12 @@ export function formatCurrencyMask(value: string): string {
         minimumFractionDigits: 2,
         maximumFractionDigits: 2
     })
+}
+
+//converte strings em números
+export function parseCurrency(value: string): number {
+    return (
+        parseFloat(value.replace(/\./g,'').replace(',', '.').replace('R$', '')) 
+        || 0
+    )
 }
