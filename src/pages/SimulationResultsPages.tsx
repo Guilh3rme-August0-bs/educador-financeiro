@@ -1,24 +1,33 @@
 import { Card } from "../components/features/SimulationResults/Card"
 import { PageHero } from "../components/shared/PageHero"
 import { CalendarClock, Goal, PiggyBank, Wallet, CreditCardIcon, Landmark } from "lucide-react"
-import type { SimulationFormData } from "../data/simulation"
 import { calcMonthlySavings } from "../utils/simulation"
+import { useParams } from "react-router-dom"
+import { useSimulationStorage } from "../components/hooks/useSimulationStorage"
 
 //modelo de resultado
-const mock: SimulationFormData = {
-    income: 'R$ 5.000,00',
-    expenses: 'R$ 2.000,00',
-    debts: 'R$ 500,00',
-    goalName: 'Viagem para o Japão',
-    goalAmount: 'R$ 15.000,00',
-    goalDeadline: '12',
-}
+// const mock: SimulationFormData = {
+//     income: 'R$ 5.000,00',
+//     expenses: 'R$ 2.000,00',
+//     debts: 'R$ 500,00',
+//     goalName: 'Viagem para o Japão',
+//     goalAmount: 'R$ 15.000,00',
+//     goalDeadline: '12',
+// }
 
 export function SimulationResultsPage() {
 
-    const data: SimulationFormData = mock
-    const monthlySavings = calcMonthlySavings(data)
+    //useParams pega o id que está na URL
+    const { id } = useParams<{ id: string }>()
+    const { getFormData } = useSimulationStorage()
 
+    const data = id ? getFormData(id) : null
+    if (!data) {
+        return <p>Simulação não encontrada</p>
+    }
+    
+    const monthlySavings = calcMonthlySavings(data)
+    
     return (
         <main className="mx-auto max-w-6xl px-4 py-10 sm:py-14">
             <PageHero
@@ -30,7 +39,7 @@ export function SimulationResultsPage() {
                     icon={Goal}
                     label="Custo da Meta"
                     value={data.goalAmount}
-                    subtitle={'Viagem para o Japão'} />
+                    subtitle={data.goalName} />
                 <Card
                     icon={CalendarClock}
                     label="Prazo"
@@ -46,7 +55,7 @@ export function SimulationResultsPage() {
 
 
             <div className="grid grid-cols-1 gap-6 lg:grid-cols-3">
-                <div className="bg-card order-2 rounded-lg p-6 shadow-[4px 4px_18px_0px_rgba(0,0,0,0.2)] lg:order-1 1g: col-span-2"> 
+                <div className="bg-card order-2 rounded-lg p-6 shadow-[4px 4px_18px_0px_rgba(0,0,0,0.2)] lg:order-1 1g: col-span-2">
                     Painel de Insights
                 </div>
                 <div className="order-1 flex flex-col gap-6 lg:order-2">

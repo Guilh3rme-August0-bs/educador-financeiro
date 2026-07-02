@@ -78,4 +78,7 @@ export const simulationFormSteps = [
 export type SimulationFormData = Record<
     (typeof simulationFormSteps)[number]['id'],
     string
-> 
+>
+
+//tipo para unir as informações do SimulationFormData
+export type SimulationRecord = SimulationFormData & { id: string }
