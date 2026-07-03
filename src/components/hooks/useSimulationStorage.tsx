@@ -16,14 +16,14 @@ export const useSimulationStorage = () => {
         //verificar a existencia de dados no array (ex: simulações anteriores)
         const storage = localStorage.getItem(LOCAL_STORAGE_KEY)
         const saveData = storage ? (JSON.parse(storage) as SimulationRecord[]) : []
-        
+
         localStorage.setItem(
             LOCAL_STORAGE_KEY,
             JSON.stringify([...saveData, record]),
         )
 
         return id
-    
+
     }
 
     //função para buscar os dados do form pelo id
@@ -36,6 +36,18 @@ export const useSimulationStorage = () => {
         const savedData = JSON.parse(storage) as SimulationRecord[]
         return savedData.find((record) => record.id === id) || null
     }
+
+    //atualizar simulação
+    const updateSimulation = (id: string, data: SimulationRecord) => {
+        const storage = localStorage.getItem(LOCAL_STORAGE_KEY)
+        const savedData = storage ? (JSON.parse(storage) as SimulationRecord[]) : []
+
+        const updated = savedData.map((record) =>
+            record.id === id ? { ...data } : record)
+
+        localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(updated))
+    }
+
     //retornar função para que ela possa ser utilizada nos hooks
-    return { saveFormData, getFormData }
+    return { saveFormData, getFormData, updateSimulation }
 }

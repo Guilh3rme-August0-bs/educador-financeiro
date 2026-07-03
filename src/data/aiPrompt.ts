@@ -28,10 +28,11 @@ const RESPONSE_SCHEMA = `{
 }`
 
 export function buildAIPrompt(simulation: SimulationRecord) {
-    const { income, expenses, debts, goalName, goalAmount, goalDeadLine } = simulation
+    const { income, expenses, debts, goalName, goalAmount, goalDeadline } = simulation
 
     const monthlySavings = calcMonthlySavings(simulation)
-    const monthlySavingNeeded = parseCurrency(goalAmount) / parseInt(goalDeadLine)
+    const deadlineMonths = Number.parseInt(goalDeadline, 10) || 1
+    const monthlySavingNeeded = parseCurrency(goalAmount) / deadlineMonths
 
     return `Você é um educador financeiro especializado em finanças pessoais.
 Analise os dados abaixo e gere um diagnóstico financeiro personalizado com linguagem clara, didática e encorajadora, voltado para pessoas sem conhecimento financeiro. O diagnóstico será exibido diretamente ao usuário no app, fale sempre em segunda pessoa ("você tem...", "sua meta...").
@@ -43,7 +44,7 @@ Dados da simulação:
 - Valor disponível por mês: ${monthlySavings} reais
 - Meta: ${goalName}
 - Custo da meta: ${goalAmount}
-- Prazo desejado: ${goalDeadLine} meses
+- Prazo desejado: ${goalDeadline} meses
 
 - Economia mensal necessária para atingir a meta no prazo: ${monthlySavingNeeded} reais
 - Saldo após reserva para a meta: ${monthlySavings - monthlySavingNeeded} reais

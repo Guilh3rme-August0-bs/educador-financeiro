@@ -1,5 +1,6 @@
 import { CalendarClock, CreditCard, Goal, Landmark, PiggyBank, Wallet } from 'lucide-react'
 import type { FormStepProps } from '../components/features/simulation/FormStep'
+import type { InsightData } from '../services/aiService'
 
 export const simulationFormSteps = [
     {
@@ -81,4 +82,6 @@ export type SimulationFormData = Record<
 >
 
 //tipo para unir as informações do SimulationFormData
-export type SimulationRecord = SimulationFormData & { id: string }
+export type SimulationRecord = SimulationFormData & {
+    id: string
+    insight?: InsightData }
