@@ -39,50 +39,49 @@ const variantClasses = {
 
 }
 
-export function HistoryCard({ 
+export function HistoryCard({
     id,
-    nome, 
+    nome,
     //data, 
-    custo, 
-    prazo, 
-    economia, 
+    custo,
+    prazo,
+    economia,
     variant = 'default' }: HistoryCardProps) {
 
     const styles = variantClasses[variant]
 
     return (
-        <div className={["rounded-lg p-6 shadow-[4px_4px_18px_0px_rgba(0,0,0,0.2) flex flex-row]", styles.card].join(' ')}>
+        <div className={["flex flex-col rounded-lg items-center p-6 shadow-[4px_4px_18px_0px_rgba(0,0,0,0.2)] gap-5 sm:flex-row", styles.card].join(' ')}>
             <Goal size={40} className={styles.accent} />
-            <div className="order 2 flex-1 justify-center rounded-lg py-3 sm:order-1">
+            <p className="hidden">{id}</p>
+            <div className="order 1 flex-1 justify-center rounded-lg py-3">
                 <h3>{nome}</h3>
-                <p className="hidden">{id}</p>
-                {/* <span>{data}</span> */}
             </div>
-            <div className={["order 2 flex-1 justify-center rounded-lg py-3 sm:order-1 text-3x1 font-semibold", styles.value].join(' ')}>
+            <div className={["order 2 flex-1 justify-center rounded-lg py-3 text-3x1 font-semibold", styles.value].join(' ')}>
                 <h2 className="text-primary mb-1 text-xs font-semibold tracking-widest uppercase">CUSTO DA META</h2>
                 <h3 className="text-foreground mb-6 text-x1 leading-snug font-semibold sm:text-2x1">{custo}</h3>
             </div>
-            <div className={["order 2 flex-1 justify-center rounded-lg py-3 sm:order-1 text-3x1 font-semibold", styles.value].join(' ')}>
+            <div className={["order 3 flex-1 justify-center rounded-lg py-3 text-3x1 font-semibold", styles.value].join(' ')}>
                 <h2 className="text-primary mb-1 text-xs font-semibold tracking-widest uppercase">PRAZO DA META</h2>
                 <h3 className="text-foreground mb-6 text-x1 leading-snug font-semibold sm:text-2x1">{prazo}</h3>
             </div>
-            <div className={["order 2 flex-1 justify-center rounded-lg py-3 sm:order-1 text-3x1 font-semibold", styles.value].join(' ')}>
+            <div className={["order 4 flex-1 justify-center rounded-lg py-3 text-3x1 font-semibold", styles.value].join(' ')}>
                 <h2 className="text-primary mb-1 text-xs font-semibold tracking-widest uppercase">ECONOMIA MENSAL</h2>
                 <h3 className="text-foreground mb-6 text-x1 leading-snug font-semibold sm:text-2x1">{economia}</h3>
             </div>
-            <Button
-                icon={Trash2}
-                type='button'
-                variant="ghost"
-                className="order 2 flex-1 justify-center rounded-lg py-3 sm:order-5">
-            </Button>
-            <Button
-                icon={ExternalLink}
-                type='button'
-                variant="secondary"
-                className="order 2 flex-1 justify-center rounded-lg py-3 sm:order-5">
-                Ver detalhes
-            </Button>
+            <div className="order 5 flex items-center space-x-2 sm:order-5">
+                <button
+                    className="bg-[#ef4444a6] mr-10 text-center flex w-10 justify-center py-3 sm:order-5 rounded-full cursor-pointer">
+                    <Trash2 size={16}/>
+                </button>
+                <Button
+                    icon={ExternalLink}
+                    type='button'
+                    variant="secondary"
+                    className="flex-1 justify-center rounded-lg py-3 sm:order-6">
+                    <span>Ver detalhes</span>
+                </Button>
+            </div>
         </div>
     )
 }

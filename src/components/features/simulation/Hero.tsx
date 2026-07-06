@@ -2,7 +2,7 @@ export const SimulationHero = () => {
     return (
         <div className="mb-8 text-center">
             <div className="flex flex-col items-center sm:flex-row justify-center">
-                <h1 className="text-foreground text-3xl font-semibold sm:text-4x1">
+                <h1 className="text-foreground text-3xl font-semibold sm:text-2x1">
                     Vamos planejar seu futuro
                 </h1>
                 
