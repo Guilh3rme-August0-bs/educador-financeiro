@@ -2,6 +2,7 @@ import { createBrowserRouter } from "react-router-dom";
 import { RootLayout } from "./components/layout/RootLayout";
 import { SimulationFormPage } from "./pages/SimulationFormPage";
 import { SimulationResultsPage } from "./pages/SimulationResultsPages";
+import { SimulationHistoryPage } from "./pages/SimulationHistoryPage";
 
 export const router = createBrowserRouter([
     {
@@ -19,7 +20,7 @@ export const router = createBrowserRouter([
             },
             {
                 path: '/historico',
-                element: <h1>Histórico de Simulação</h1>
+                element: <SimulationHistoryPage/>
             },
         ],
     }
