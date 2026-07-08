@@ -9,20 +9,30 @@ import { useState } from "react"
 //biblioteca para montar barras de loading do insight
 import 'react-loading-skeleton/dist/skeleton.css'
 import Skeleton from "react-loading-skeleton"
+import { useChat } from "../../hooks/useChat"
 
-//estado para obter valor do input
-const [inputValue] = useState('')
 
-//perguntar ao chat
-const askChat = (question : string) => {
-
-}
 
 interface AIInsightCardProps {
     simulationId: string
 }
 
 export function AIInsightsCard({ simulationId }: AIInsightCardProps) {
+
+    //estado para obter valor do input
+    const [inputValue, setValue] = useState('')
+
+    const { fetchChat } = useChat(simulationId)
+
+    //perguntar ao chat
+    const askChat = async (question: string) => {
+        const result = await fetchChat(simulationId, question)
+        const responseObject = { answer: result ?? '' }
+        console.log(responseObject)
+        setValue('')
+        return responseObject
+    }
+
     const { insight, isLoading, error, fetchInsight } = useInsight(simulationId)
 
     return (
@@ -49,8 +59,8 @@ export function AIInsightsCard({ simulationId }: AIInsightCardProps) {
             {!isLoading && error && <Error simulationId={simulationId} message={error} onRetry={() => { fetchInsight(simulationId) }} />}
             {!isLoading && insight && <Content insight={insight} />}
             <div className="flex flex-row gap-3">
-                <Input className="w-148" placeholder="Tire as suas dúvidas sobre a simulação" value={inputValue}/>
-                <Button icon={ArrowRight} variant='primary' onClick={() => {askChat(inputValue)}}></Button>
+                <Input className="w-148" placeholder="Tire as suas dúvidas sobre a simulação" value={inputValue} onChange={(e) => { setValue(e.target.value) }} />
+                <Button icon={ArrowRight} variant='primary' onClick={() => { askChat(inputValue) }}></Button>
             </div>
         </div >
     )
