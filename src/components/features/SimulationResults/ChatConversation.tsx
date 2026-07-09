@@ -1,3 +1,4 @@
+import { useEffect, useRef } from 'react'
 import { useChatHistory } from '../../hooks/useChatHistory'
 
 interface ChatConversationProps {
@@ -5,6 +6,7 @@ interface ChatConversationProps {
 }
 
 function renderAnswerContent(answer: unknown) {
+  // Trata diferentes formatos de resposta do histórico de chat
   if (typeof answer === 'string') {
     return <p className="whitespace-pre-line text-foreground">{answer}</p>
   }
@@ -39,14 +41,24 @@ function renderAnswerContent(answer: unknown) {
 }
 
 export function ChatConversation({ simulationId }: ChatConversationProps) {
+  // Carrega o histórico de chat para a simulação atual
   const history = useChatHistory(simulationId) ?? []
 
+  // Referência para o elemento que ficará no fim da lista de mensagens
+  const messagesEndRef = useRef<HTMLDivElement>(null)
+
+  useEffect(() => {
+    // Quando o histórico mudar, rola automaticamente para o fim
+    messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' })
+  }, [history])
+
   if (!history.length) {
+    // Não renderiza nada se não houver histórico
     return null
   }
 
   return (
-    <div className="mt-6 mb-6 rounded-lg bg-card">
+    <div className="mt-6 p-6 mb-9 rounded-lg bg-card shadow-[4px_4px_18px_0px_rgba(0,0,0,0.2)]">
       <div className="mb-4 text-sm font-semibold uppercase text-primary">
         Perguntas e respostas da IA
       </div>
@@ -55,7 +67,7 @@ export function ChatConversation({ simulationId }: ChatConversationProps) {
         {history.map((item, index) => (
           <div
             key={`${item.createdAt}-${index}`}
-            className="rounded-lg border border-slate-200 bg-card p-4"
+            className="rounded-lg bg-card p-2"
           >
             <div className="mb-2 text-xs uppercase text-primary">Pergunta</div>
             <p className="whitespace-pre-line text-sm text-foreground">{item.question}</p>
@@ -64,6 +76,7 @@ export function ChatConversation({ simulationId }: ChatConversationProps) {
             {renderAnswerContent(item.answer)}
           </div>
         ))}
+        <div ref={messagesEndRef} />
       </div>
     </div>
   )

@@ -1,10 +1,13 @@
 import { Card } from "../components/features/SimulationResults/Card"
 import { PageHero } from "../components/shared/PageHero"
-import { CalendarClock, Goal, PiggyBank, Wallet, CreditCardIcon, Landmark } from "lucide-react"
+import { CalendarClock, Goal, PiggyBank, Wallet, CreditCardIcon, Landmark, LoaderCircle, ArrowRight } from "lucide-react"
 import { calcMonthlySavings } from "../utils/simulation"
 import { useParams } from "react-router-dom"
 import { useSimulationStorage } from "../components/hooks/useSimulationStorage"
 import { AIInsightsCard } from "../components/features/SimulationResults/AIInsightCardProps"
+import { ChatConversation } from "../components/features/SimulationResults/ChatConversation"
+import { useState } from "react"
+import { useChat } from "../components/hooks/useChat"
 
 //modelo de resultado
 // const mock: SimulationFormData = {
@@ -26,9 +29,26 @@ export function SimulationResultsPage() {
     if (!data) {
         return <p>Simulação não encontrada</p>
     }
-    
+
     const monthlySavings = calcMonthlySavings(data)
-    
+
+
+    //estado para obter valor do input
+    const [inputValue, setValue] = useState('')
+
+    const { chatIsLoading, fetchChat } = useChat(data.id)
+
+    //perguntar ao chat
+    const askChat = async (question: string) => {
+
+        const result = await fetchChat(data.id, question)
+        const responseObject = { answer: result ?? '' }
+        responseObject.answer === ' ' ? alert('A IA não conseguiu gerar uma resposta. Tente novamente') : console.log(responseObject)
+        setValue('')
+        return responseObject
+    }
+
+
     return (
         <main className="mx-auto max-w-6xl px-4 py-10 sm:py-14">
             <PageHero
@@ -56,7 +76,7 @@ export function SimulationResultsPage() {
 
 
             <div className="grid grid-cols-1 gap-6 lg:grid-cols-3">
-                <AIInsightsCard simulationId={data.id}/>
+                <AIInsightsCard simulationId={data.id} />
                 <div className="order-1 flex flex-col gap-6 lg:order-2">
                     <Card
                         icon={Wallet}
@@ -74,6 +94,13 @@ export function SimulationResultsPage() {
                         value={data.debts}
                         subtitle={'Valor comprometido em parcelas/depósito'} />
                 </div>
+            </div>
+            <ChatConversation simulationId={data.id} />
+            <div className="grid grid-cols-10 mt-6 p-6 rounded-lg bg-card shadow-[6px_6px_6px_6px_rgba(0,0,0,0.1)]">
+                <input className="col-span-8 p-3 rounded-lg text-foreground placeholder:text-muted-foreground shadow-[6px_2px_6px_4px_rgba(0,0,0,0.2)] sm:col-span-9" placeholder="Tire as suas dúvidas sobre a simulação" value={inputValue} onChange={(e) => { setValue(e.target.value) }} />
+                <button className="col-span-2 ml-4 sm:col-span-1 flex justify-center items-center cursor-pointer bg-primary rounded-lg" onClick={() => { askChat(inputValue) }}>
+                    {chatIsLoading ? <LoaderCircle className="animate-spin" /> : <ArrowRight />}
+                </button>
             </div>
 
         </main>)
