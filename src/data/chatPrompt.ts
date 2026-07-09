@@ -50,8 +50,9 @@ ${insight}
 
 Regras:
 - Todos os textos em português do Brasil
-- Máximo de 4 itens por lista
+- Toda a resposta deve ser escrita dentro de uma única propriedade do objeto
 - Seja específico ao citar valores calculados
-- Não repita informações entre seções
+- Não repita informações
+- Seja breve, não fique se apresentando ou dizendo o que vai fazer, a resposta tem que ser direta e deve estar dentro de um só objeto
 - Nunca use markdown dentro dos valores do JSON`
 }

@@ -18,7 +18,7 @@ export const useChat = (id: string) => {
     return null
   })
 
-  const [isLoading, setIsLoading] = useState(false)
+  const [chatIsLoading, setchatIsLoading] = useState(false)
   const [error, setError] = useState<string | null>(null)
 
   const fetchChat = useCallback(
@@ -31,7 +31,7 @@ export const useChat = (id: string) => {
       }
 
       isRequestPending.current = true
-      setIsLoading(true)
+      setchatIsLoading(true)
       setError(null)
 
       try {
@@ -59,11 +59,11 @@ export const useChat = (id: string) => {
 
         setInsight(data)
         return data
-      } catch {
+      } catch(error) {
         setError('Erro ao gerar o diagnóstico. Tente novamente')
-        return null
+        return ` `
       } finally {
-        setIsLoading(false)
+        setchatIsLoading(false)
         isRequestPending.current = false
       }
     },
@@ -85,12 +85,12 @@ export const useChat = (id: string) => {
   }
 
   useEffect(() => {
-    if (insight || isLoading || error || isRequestPending.current) {
+    if (insight || chatIsLoading || error || isRequestPending.current) {
       return
     }
 
     fetchChat(id, '')
-  }, [id, insight, isLoading, error, fetchChat])
+  }, [id, insight, chatIsLoading, error, fetchChat])
 
-  return { insight, isLoading, error, fetchChat, askChat }
+  return { insight, chatIsLoading, error, fetchChat, askChat }
 }
