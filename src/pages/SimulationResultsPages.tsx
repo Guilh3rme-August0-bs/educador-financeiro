@@ -97,7 +97,9 @@ export function SimulationResultsPage() {
             </div>
             <ChatConversation simulationId={data.id} />
             <div className="grid grid-cols-10 mt-6 p-6 rounded-lg bg-card shadow-[6px_6px_6px_6px_rgba(0,0,0,0.1)]">
-                <input className="col-span-8 p-3 rounded-lg text-foreground placeholder:text-muted-foreground shadow-[6px_2px_6px_4px_rgba(0,0,0,0.2)] sm:col-span-9" placeholder="Tire as suas dúvidas sobre a simulação" value={inputValue} onChange={(e) => { setValue(e.target.value) }} />
+                <input className="col-span-8 p-3 rounded-lg text-foreground placeholder:text-muted-foreground shadow-[6px_2px_6px_4px_rgba(0,0,0,0.2)] sm:col-span-9" 
+                placeholder="Tire as suas dúvidas sobre a simulação" value={inputValue} onChange={(e) => { setValue(e.target.value) }}
+                onKeyDown={(e) => { if (e.key === 'Enter') { askChat(inputValue) } }} />
                 <button className="col-span-2 ml-4 sm:col-span-1 flex justify-center items-center cursor-pointer bg-primary rounded-lg" onClick={() => { askChat(inputValue) }}>
                     {chatIsLoading ? <LoaderCircle className="animate-spin" /> : <ArrowRight />}
                 </button>
